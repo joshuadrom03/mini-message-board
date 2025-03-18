@@ -1,11 +1,32 @@
 const express = require("express")
 const app = express()
+const path = require("node:path");
 
-const indexRouter = require("./routers/indexRouter")
-const newMessageRouter = require("./routers/newMessageRouter")
+const messages = [
+    {
+      text: "Hello There",
+      user: "Kenobi",
+      added: new Date()
+    },
+    {
+      text: "General Kenobi",
+      user: "Grevious",
+      added: new Date()
+    }
+  ];
+  
 
-app.use("/", indexRouter);
-app.use("/new", newMessageRouter);
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.get("/",(req,res) => {
+    res.render("index", {messages: messages})
+});
+
+app.get("/new", (req, res)=> {
+    res.render("newMessage")
+})
 
 const PORT = 3000
 
