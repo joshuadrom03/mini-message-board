@@ -4,8 +4,7 @@ const express = require("express")
 const app = express()
 const path = require("node:path");
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
 const messages = [
     {
@@ -22,6 +21,12 @@ const messages = [
 
   indexRouter.get("/", (req, res) => {
     res.render("index", {title: "Mini MessageBoard", messages: messages})
+  })
+
+  indexRouter.post("/new", (req, res) => {
+    
+    messages.push({ text: req.body.textMessage, user: req.body.userName, added : new Date()})
+    res.redirect("/")
   })
 
   module.exports = indexRouter
